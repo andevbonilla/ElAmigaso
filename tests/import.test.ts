@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { amount, daysBetween, parseRows, group } from '../lib/data';
+import { readSalesFile } from '../lib/import';
+import ExcelJS from 'exceljs';
+const h=['Factura','Cliente','Pedido','Forma de Pago','Estado','Asesor','Total'];
+const row=['EJ124509-2026-09-30 15:20','Comercio Uno',89008,'CREDITO','APROBADO','Asesor Uno','9,221,400'];
+test('reads ABAKO values and normalizes spaces without losing invoice prefix',()=>{const r=parseRows([h,row]);assert.equal(r.rows[0].id,'EJ124509');assert.equal(r.rows[0].date,'2026-09-30');assert.equal(r.rows[0].total,9221400);});
+test('accepts numeric and Colombia / ABAKO amounts, rejects invalid values',()=>{assert.equal(amount('9,221,400'),9221400);assert.equal(amount('1.234.567,89'),1234567.89);assert.equal(amount('1,234.56'),1234.56);assert.equal(amount(25),25);assert.ok(Number.isNaN(amount('')));assert.ok(Number.isNaN(amount('1,,2')));});
+test('deduplicates exact rows and rejects conflicting invoice identifiers',()=>{assert.equal(parseRows([h,row,row]).duplicates,1);assert.throws(()=>parseRows([h,row,[...row.slice(0,6),'10']]),/datos distintos/);});
+test('rejects impossible calendar dates and reports excluded rows',()=>{const r=parseRows([h,row,['EJ2-2026-02-30 09:00',...row.slice(1)]]);assert.equal(r.rejected,1);assert.equal(r.rows.length,1);});
+test('retains cancelled status without silently counting it as approved',()=>{const r=parseRows([h,row,['EJ2-2026-09-29 12:00',...row.slice(1,4),'ANULADO',...row.slice(5)]]);assert.equal(r.rows.filter(x=>x.status==='APROBADO').length,1);assert.equal(group(r.rows,'advisor')[0].count,2);});
+test('missing headers and empty files are actionable errors',()=>{assert.throws(()=>parseRows([['foo']]),/7 columnas/);assert.throws(()=>parseRows([h]),/facturas válidas/);});
+test('date range includes end day and respects leap years',()=>{assert.deepEqual(daysBetween('2024-02-28','2024-03-01'),['2024-02-28','2024-02-29','2024-03-01']);assert.deepEqual(daysBetween('2026-09-30','2026-09-01'),[]);});
+test('imports quoted comma CSV and semicolon CSV',async()=>{for(const d of [',',';']){const text=[h,row].map(r=>r.map(v=>'"'+v+'"').join(d)).join('\n');const result=await readSalesFile(new File([text],'sales.csv'));assert.equal(result.rows[0].total,9221400);}});
+test('finds the worksheet with ABAKO headers and reads an actual XLSX payload',async()=>{const w=new ExcelJS.Workbook();w.addWorksheet('Notas').addRow(['Sin datos']);const s=w.addWorksheet('Ventas');s.addRow(h);s.addRow(row);const buffer=await w.xlsx.writeBuffer();const result=await readSalesFile(new File([new Uint8Array(buffer)],'sales.xlsx'));assert.equal(result.sheet,'Ventas');assert.equal(result.rows[0].total,9221400);});
+test('rejects unsupported file types and oversize inputs',async()=>{await assert.rejects(()=>readSalesFile(new File(['x'],'sales.txt')),/xlsx/);await assert.rejects(()=>readSalesFile(new File([new Uint8Array(16*1024*1024)],'sales.xlsx')),/15 MB/);});
