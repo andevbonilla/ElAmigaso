@@ -1,5 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import { ArrowUpRight, MapPin, Sparkles, Users, Wallet, LocateFixed, Layers, X, Info, ReceiptText, Upload, AlertCircle } from 'lucide-react';
 import { mapDemo, zones, type MapClient } from '@/lib/map-demo';
@@ -15,7 +16,7 @@ export default function MapDashboard(){
   const total=points.reduce((s,p)=>s+p.total,0),invoices=points.reduce((s,p)=>s+p.invoices,0);
   const ranks=zones.map(z=>({name:z.name,total:points.filter(p=>p.zone===z.name).reduce((s,p)=>s+p.total,0)})).filter(z=>z.total>0).sort((a,b)=>b.total-a.total);
   return <><div className="page-heading"><div><div className="eyebrow">UNA NUEVA PERSPECTIVA DEL TERRITORIO</div><h1>Ventas por zona<span>.</span></h1><p>Consulta dónde vendes más, por barrio o localidad.</p></div><div className="heading-actions"><button className="button secondary" onClick={() => setUploadError(true)}><Upload size={17}/>Cargar Excel o CSV</button><button className="button primary" onClick={()=>{setLoaded(true);setZone('TODAS');setAdvisor('TODOS');setSelected(null);}}><Sparkles size={17}/>{loaded?'Restablecer demostración':'Probar con datos de ejemplo'}</button></div></div>
-  <AbakoTutorial section="map" />
+  <AbakoTutorial section="map" /><div className="notice demo-notice"><p>¿Tienes un Excel de Recorrido Diario? Ya puedes cargar posiciones reales en la nueva vista.</p><Link className="button secondary" href="/recorridos">Cargar recorrido real</Link></div>
   {uploadError && <div role="alert" className="notice error"><AlertCircle size={19}/><span>La carga de Excel o CSV aún no está disponible en el mapa de calor. Por ahora, solo está disponible la versión con datos de prueba.</span><button aria-label="Cerrar aviso de carga" onClick={() => setUploadError(false)}><X size={16}/></button></div>}
   <div className="notice demo-notice"><Info size={18}/><p><strong>Laboratorio geográfico.</strong> Clientes, ubicaciones e importes ficticios en Bogotá. Los datos del Excel no se utilizan en este mapa.</p><span className="badge">DEMOSTRACIÓN</span></div>
   <div className="metrics-grid"><Metric accent label="Facturación simulada" value={loaded?money(total):'—'} detail="Escenario de septiembre de 2026" icon={<Wallet size={18}/>}/><Metric label="Clientes en el mapa" value={loaded?String(points.length):'—'} detail="Puntos de venta ficticios" icon={<Users size={18}/>}/><Metric label="Zonas representadas" value={loaded?String(ranks.length):'—'} detail="Agrupaciones de demostración" icon={<MapPin size={18}/>}/><Metric label="Facturas simuladas" value={loaded?String(invoices):'—'} detail="Según los filtros seleccionados" icon={<ReceiptText size={18}/>}/></div>

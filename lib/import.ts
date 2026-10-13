@@ -18,11 +18,12 @@ export async function readSalesFile(file: File) {
       const cells: unknown[] = [];
       for (let i = 1; i <= Math.max(row.cellCount, 7); i++) {
         const cell = row.getCell(i);
-        cells.push(cell.type === ExcelJS.ValueType.Number ? cell.value : cell.text);
+        cells.push(cell.value == null ? null : cell.type === ExcelJS.ValueType.Number ? cell.value : cell.text);
       }
       grid.push(cells);
     });
     if (grid.some(row => headers.every(h => row.map(norm).includes(h)))) return { ...parseRows(grid), sheet: sheet.name };
   }
-  throw new Error('Ninguna hoja tiene las columnas de la bandeja de facturación de ABAKO.');
+  throw new Error('Ninguna hoja tiene las columnas de la bandeja de facturación de ABAKO. Si exportaste el resumen por Asesor, cárgalo en Rentabilidad por asesor.');
 }
+

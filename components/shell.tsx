@@ -13,6 +13,8 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     <div className="section-navigation"><nav aria-label="Navegación principal">
       <Link href="/" aria-current={path === '/' ? 'page' : undefined} className={path === '/' ? 'active' : ''}><BarChart3 size={18}/>Análisis de ventas</Link>
       <Link href="/mapa" aria-current={path === '/mapa' ? 'page' : undefined} className={path === '/mapa' ? 'active' : ''}><Map size={18}/>Ventas por zona</Link>
+      <Link href="/rentabilidad" aria-current={path === '/rentabilidad' ? 'page' : undefined} className={path === '/rentabilidad' ? 'active' : ''}><BarChart3 size={18}/>Rentabilidad por asesor</Link>
+      <Link href="/recorridos" aria-current={path === '/recorridos' ? 'page' : undefined} className={path === '/recorridos' ? 'active' : ''}><Map size={18}/>Recorridos reales</Link>
     </nav><span className="local-processing"><ShieldCheck size={15}/>Datos procesados en tu navegador</span></div>
     <div className="main-shell"><main>{children}</main><footer className="company-footer"><Image src="/brand/el-amigaso-logo.png" width={160} height={56} alt="El Amiga$o · Plan de recaudo diario"/><span>Inteligencia comercial · Bogotá, D.C.</span></footer></div>
   </div>;

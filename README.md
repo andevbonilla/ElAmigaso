@@ -39,3 +39,14 @@ Se excluyen filas inválidas con un informe visible, se omiten duplicados exacto
 ## Librerías
 
 Next.js App Router, React, TypeScript, Recharts, ExcelJS, Papa Parse, Leaflet y Leaflet.heat. Diseño adaptable a escritorio y móvil.
+
+## Nuevas fuentes de ABAKO
+
+- `/rentabilidad`: resumen por Asesor con Unidades, Subtotal, Costo, IVA, Otros Impuestos y Descuento. Excluye Grand Total; conserva filas de nombres repetidos y permite confirmar la definición de Subtotal antes de calcular margen bruto. El mes indicado es una etiqueta manual, no un filtro: el archivo no contiene fechas.
+- `/recorridos`: admite un Excel o CSV de Recorrido Diario a la vez (15 MB). Cada nueva carga válida reemplaza la anterior. Ordena posiciones por fecha y hora y muestra solo el día seleccionado, con trayectoria y reproducción.
+
+Tutorial de recorridos: Georreferenciación → Indicadores → Seguimiento → Recorrido Diario. Primero seleccionar la fecha, después el asesor. Descargar un archivo por día y vendedor. Las capturas ilustran ese orden y la descarga mediante Herramientas de mapa → Excel. Los tutoriales se abren una vez por navegador y pueden reabrirse con el botón de ayuda.
+
+Las nuevas páginas guardan los datos solo mientras permaneces en ellas: al navegar o recargar, hay que cargarlos de nuevo. Los puntos GPS no equivalen a visitas o ventas. Para relacionar recorrido y ventas se necesitan fechas coincidentes y documentos/clientes asociados; el resumen mensual no permite ese cruce. `/mapa` mantiene su demostración de ventas ficticias.
+
+
