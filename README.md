@@ -12,9 +12,11 @@ Cada página muestra una explicación corta y un ejemplo ilustrativo desplegable
 
 En T, Potencial por estimar identifica los clientes sin esa estimación. El aviso distingue cuántos necesitan potencial mensual y cuántos viabilidad de atención; esos conteos pueden corresponder a las mismas tiendas. El Excel aporta compras realizadas, no estos dos juicios comerciales. Cada fila muestra todos los campos que faltan y enlaza a su ficha, que se abre con el cliente seleccionado. Un mes de ventas no sustituye la validación del asesor. La marca en textos es El Amigaso; el logo original se conserva.
 
-Al abrir se carga automáticamente el Excel real **Facturación-2026-10-16T05_26_17.926Z.xlsx**, ubicado en **C:\Users\andre\Downloads**, con datos del **1 al 7 de septiembre de 2026**, descargado el **16 de octubre de 2026**. El aviso distingue el periodo de los datos y la fecha de descarga, e indica su ruta en ABAKO y su ruta local. **Usar Excel de ejemplo** permite volver a cargarlo después de probar otro archivo.
+Al abrir se carga automáticamente una copia CSV del Excel real **Facturación-2026-10-16T05_26_17.926Z.xlsx**, cuyo original estaba en **C:\Users\andre\Downloads**, con datos del **1 al 7 de septiembre de 2026**, descargado el **16 de octubre de 2026**. El aviso distingue el periodo de los datos y la fecha de descarga, e indica su ruta en ABAKO y su ubicación original. **Usar datos de ejemplo** permite volver a cargarlo después de probar otro archivo.
 
-El servidor local lee el Excel de su ruta original mediante /api/ejemplo. No se copia el contenido a public ni al repositorio. El ejemplo se sirve únicamente desde localhost y no se habilita en Vercel. Si se mueve o elimina el archivo, la app permite cargar otro Excel y muestra el motivo. Las funciones de simulación permanecen únicamente como datos de prueba internos.
+El ejemplo se distribuye como **public/examples/facturacion-septiembre-2026-ejemplo.csv**, convertido del Excel original: 10.916 filas y 22 columnas. Se descarga como archivo estático y se procesa en el navegador, tanto localmente como en Vercel. No depende de Descargas, de variables de entorno ni de un servidor de archivos local. Incluye este CSV en el commit para que Vercel lo publique. Su contenido estará disponible para quien pueda acceder al sitio. Las funciones de simulación permanecen únicamente como datos de prueba internos.
+
+Las cinco páginas incluyen **Previsualización de los datos**, con búsqueda, paginación, descarga del ejemplo y exportación de los registros visibles. La tabla usa la fuente activa y el periodo seleccionado; no hereda los filtros individuales de las gráficas. El detalle muestra productos por factura (varias filas pueden ser una misma compra), y la pestaña Fichas comerciales distingue campos vacíos de valores cero. Al cargar otro archivo, la vista se actualiza con sus datos.
 
 ## Obtener el Excel detallado en ABAKO
 
@@ -57,6 +59,6 @@ La ficha opcional usa Cliente, TipoNegocio, Zona, PotencialMensual, CicloDias, V
 
 ## Operación y verificación
 
-Datos en memoria: navegar los conserva; recargar los borra. No hay endpoint de subida ni IA externa. El mapa usa cartografía OpenStreetMap; los registros se procesan en el navegador. No añadas archivos empresariales ni credenciales a Git.
+Datos en memoria: navegar los conserva; recargar vuelve al ejemplo incluido. No hay endpoint de subida ni IA externa. El mapa usa cartografía OpenStreetMap; los registros se procesan en el navegador. El CSV de ejemplo está incluido por solicitud del usuario; los archivos que cada persona suba no se envían al servidor. No añadas otros archivos empresariales ni credenciales a Git.
 
 npm test verifica importación, identidades, duplicados, fechas, cobertura, filtros, conciliación, STP, selección y CSV. npm run build compila para producción. Compatible con Vercel mediante preset Next.js; esta entrega sigue local.
