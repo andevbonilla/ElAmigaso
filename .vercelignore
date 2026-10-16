@@ -2,3 +2,5 @@ tests
 test-results
 *.xlsx
 *.csv
+# Incluye el ejemplo autorizado; los otros CSV siguen excluidos.
+!public/examples/facturacion-septiembre-2026-ejemplo.csv

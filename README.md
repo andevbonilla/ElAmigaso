@@ -16,6 +16,8 @@ Al abrir se carga automáticamente una copia CSV del Excel real **Facturación-2
 
 El ejemplo se distribuye como **public/examples/facturacion-septiembre-2026-ejemplo.csv**, convertido del Excel original: 10.916 filas y 22 columnas. Se descarga como archivo estático y se procesa en el navegador, tanto localmente como en Vercel. No depende de Descargas, de variables de entorno ni de un servidor de archivos local. Incluye este CSV en el commit para que Vercel lo publique. Su contenido estará disponible para quien pueda acceder al sitio. Las funciones de simulación permanecen únicamente como datos de prueba internos.
 
+`.vercelignore` contiene una excepción para este CSV concreto, después de la regla general `*.csv`. Conserva esa excepción: sin ella, Vercel omite el archivo y el ejemplo no puede cargarse. Los demás CSV y los Excel siguen excluidos del despliegue.
+
 Las cinco páginas incluyen **Previsualización de los datos**, con búsqueda, paginación, descarga del ejemplo y exportación de los registros visibles. La tabla usa la fuente activa y el periodo seleccionado; no hereda los filtros individuales de las gráficas. El detalle muestra productos por factura (varias filas pueden ser una misma compra), y la pestaña Fichas comerciales distingue campos vacíos de valores cero. Al cargar otro archivo, la vista se actualiza con sus datos.
 
 ## Obtener el Excel detallado en ABAKO
