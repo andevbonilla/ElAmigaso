@@ -1,52 +1,62 @@
-# Amigazo · Inteligencia comercial
+# El Amigaso · Decisiones comerciales STP
 
-Aplicación Next.js con dos páginas: `/` analiza exportaciones de facturación de ABAKO y `/mapa` muestra un mapa de calor interactivo de Bogotá con 84 clientes ficticios, cargados mediante un botón.
+Aplicación local Next.js con cinco páginas. Ejecuta npm ci y npm run dev; abre http://127.0.0.1:3000.
 
-## Ejecución
+- **S · Qué se encontró:** señales y próximos pasos. **Mapa y gráficas** muestra concentración geográfica y compras por fecha, categoría, asesor y zona.
+- **T · A quién priorizar:** selección humana por compra actual, potencial informado y viabilidad, limitada por capacidad.
+- **P · Qué ofrecer:** beneficio, atención y medición por segmento; exporta el plan CSV.
+- **Subir datos:** carga archivos y abre el tutorial con capturas de la consulta comprobada en ABAKO. Criterios y fichas comerciales quedan desplegables.
+- **Guía de ABAKO:** última página, con los pasos completos para obtener datos actualizados o de otro periodo. El aviso del ejemplo enlaza directamente a esta guía.
 
-Node.js 20.9 o posterior.
+Cada página muestra una explicación corta y un ejemplo ilustrativo desplegable. En T, los grupos de prioridad y los perfiles de S se distinguen explícitamente. La tabla muestra seis filas por página, con el rango y el total del grupo, botones Anterior/Siguiente y un contador independiente de plazas elegidas. Pulsar un grupo abre su lista; la capacidad limita la selección, no el número de clientes del grupo. En la simulación de regresión, Desarrollar (presentado como Aumentar compras) reúne 24 clientes: 6 En desarrollo, 12 Por recuperar y 6 Por captar; 21 son elegibles. Las cuatro páginas de la tabla conservan los 24, sin omitir registros.
 
-```sh
-npm ci
-npm run dev
-```
+En T, Potencial por estimar identifica los clientes sin esa estimación. El aviso distingue cuántos necesitan potencial mensual y cuántos viabilidad de atención; esos conteos pueden corresponder a las mismas tiendas. El Excel aporta compras realizadas, no estos dos juicios comerciales. Cada fila muestra todos los campos que faltan y enlaza a su ficha, que se abre con el cliente seleccionado. Un mes de ventas no sustituye la validación del asesor. La marca en textos es El Amigaso; el logo original se conserva.
 
-Abrir http://127.0.0.1:3000. Para validar: `npm test` y `npm run build`.
+Al abrir se carga automáticamente el Excel real **Facturación-2026-10-16T05_26_17.926Z.xlsx**, ubicado en **C:\Users\andre\Downloads**, con datos del **1 al 7 de septiembre de 2026**, descargado el **16 de octubre de 2026**. El aviso distingue el periodo de los datos y la fecha de descarga, e indica su ruta en ABAKO y su ruta local. **Usar Excel de ejemplo** permite volver a cargarlo después de probar otro archivo.
 
-## Publicar en Vercel
+El servidor local lee el Excel de su ruta original mediante /api/ejemplo. No se copia el contenido a public ni al repositorio. El ejemplo se sirve únicamente desde localhost y no se habilita en Vercel. Si se mueve o elimina el archivo, la app permite cargar otro Excel y muestra el motivo. Las funciones de simulación permanecen únicamente como datos de prueba internos.
 
-El proyecto incluye `vercel.json`. Importa este repositorio en Vercel con el preset Next.js o ejecuta `npx vercel login` y `npx vercel --prod`. No requiere variables de entorno, base de datos ni clave de mapas. No subir archivos empresariales al repositorio.
+## Obtener el Excel detallado en ABAKO
 
-## Archivo admitido
+1. Portal Transaccional → Reportes → Ventas → Facturación.
+2. Filtrar: Fecha Inicial y Fecha Final. Deja vacíos cliente, producto y asesor para consultar toda la base autorizada. Si el mes es pesado, descarga semanas.
+3. Campos: selecciona y **arrastra a Filas** Código Cliente, Cliente, Documento, Fecha, Código Artículo, Descripción Artículo, Categoría, Asesor, Latitud y Longitud. Marcar una casilla no basta. Añade Canal y Zona para comparar negocios; opcionales: Código Asesor, Segmento Cliente, Fecha Creación Cliente y Sector Productivo.
+4. En Datos conserva Unidades, Subtotal, Costo, IVA, Otros Impuestos y Descuento. Marca Expandir en cada campo de Filas. Buscar; comprueba rango e ítems.
+5. **Exportar → Excel - Todos los Registros.** Excel exporta el resumen; en esta prueba CSV generó un XLSX con estructura de resumen. Evita esas dos opciones.
+6. En Subir datos selecciona juntos los Excel del periodo. Para patrones, reúne idealmente seis meses y confirma cobertura. Un día permite concentración y surtido, no patrones de meses.
 
-Excel `.xlsx` o CSV UTF-8, hasta 15 MB. Encabezados: `Factura`, `Cliente`, `Pedido`, `Forma de Pago`, `Estado`, `Asesor`, `Total`.
+Se verificó la exportación del 1 al 7 de septiembre de 2026 contra sus 10.916 filas. Los archivos empresariales permanecen en Descargas y no se distribuyen con el código.
 
-Factura debe contener identificador y fecha/hora: `EJ124509-2026-09-30 15:20`. Se preserva el prefijo del identificador. El parser admite importes numéricos, el texto de ABAKO `9,221,400` y formato colombiano `9.221.400,00`. Busca la primera hoja con los encabezados. Los CSV detectan separador automáticamente.
+## Importación y métricas
 
-Cada carga reemplaza el archivo anterior. Los datos permanecen en memoria del navegador durante la navegación interna y se borran al recargar o cerrar. No existe endpoint de subida ni persistencia de información comercial. El archivo real del usuario no forma parte del proyecto ni de la demostración.
+XLSX y CSV real con encabezados planos; hasta 36 archivos y 64 MB por archivo. Cada carga reemplaza la anterior. El lector detecta ZIP/XLSX aunque tenga extensión CSV, pero rechaza resúmenes sin campos requeridos. Omite grupos exactos repetidos y rechaza grupos contradictorios entre archivos.
 
-Se excluyen filas inválidas con un informe visible, se omiten duplicados exactos y se rechazan identificadores repetidos con contenido diferente. El filtro inicial incluye únicamente `APROBADO`. Los nombres se normalizan para agrupación; se requiere código de cliente para una integración futura robusta.
+Código de cliente + fecha + documento agrupa productos en una compra. NOMBRE [código] separa homónimos. Canal aporta tipo de negocio; categorías se cuentan desde las compras del periodo. Con al menos cuatro días de compra distintos, el ciclo inicial es la mediana entre fechas y requiere revisión comercial.
 
-## Interpretación
+El detalle no incluye estado: se usa **subtotal reportado** de documentos con subtotal positivo, sin afirmar aprobación. No se descuenta Descuento otra vez. Subtotal y Costo se muestran separados; falta conciliar descuentos, devoluciones, notas crédito y costes operativos antes de calcular utilidad neta.
 
-- La moneda COP es un supuesto explícito. Total es el importe exportado; no equivale a ventas netas sin revisar impuestos y notas crédito.
-- Los días sin registros no confirman ausencia de ventas. Los límites de número de factura y permisos de ABAKO pueden restringir la exportación.
-- Recomendaciones descriptivas calculadas localmente; no se utiliza un modelo externo ni se afirma causalidad.
-- La forma de pago no demuestra cobro. Los rankings no controlan por cartera o jornadas.
-- El mapa utiliza datos completamente ficticios y no geocodifica nombres del Excel. Base cartográfica OpenStreetMap; necesita internet. Si falla el mapa base, la lista sigue disponible. Para un despliegue de alto tráfico debe configurarse un proveedor acorde a su política de uso.
-- Los datos y mapas de prueba no representan rutas reales. Para esa fase hacen falta visitas/GPS con fecha y hora, códigos de cliente y coordenadas.
+La bandeja anterior de 7 columnas sigue admitida: Factura, Cliente, Pedido, Forma de Pago, Estado, Asesor y Total. Usa APROBADO positivo; no alimenta mapa/productos. No se mezcla con el detalle. Resumen por asesor y recorrido GPS no sustituyen compras por cliente.
 
-## Librerías
+## Mapa y gráficas
 
-Next.js App Router, React, TypeScript, Recharts, ExcelJS, Papa Parse, Leaflet y Leaflet.heat. Diseño adaptable a escritorio y móvil.
+Usa la última coordenada utilizable de cada cliente en el periodo, sin invertir latitud/longitud. Excluye vacías, cero y fuera del rango de Colombia (-5 a 14 de latitud; -82 a -66 de longitud). La intensidad depende del subtotal relativo, concentración y zoom. Es ubicación registrada, no recorrido ni ruta optimizada.
 
-## Nuevas fuentes de ABAKO
+Muestra clientes ubicados / compradores y subtotal situado / total. Las ventas sin ubicación siguen en gráficas. Zonas vacías no demuestran ausencia de ventas. Asesor, segmento y zona filtran todas las vistas. Las tablas incluyen todos los grupos; las barras comparativas presentan los ocho mayores y la evolución conserva fechas observadas.
 
-- `/rentabilidad`: resumen por Asesor con Unidades, Subtotal, Costo, IVA, Otros Impuestos y Descuento. Excluye Grand Total; conserva filas de nombres repetidos y permite confirmar la definición de Subtotal antes de calcular margen bruto. El mes indicado es una etiqueta manual, no un filtro: el archivo no contiene fechas.
-- `/recorridos`: admite un Excel o CSV de Recorrido Diario a la vez (15 MB). Cada nueva carga válida reemplaza la anterior. Ordena posiciones por fecha y hora y muestra solo el día seleccionado, con trayectoria y reproducción.
+## Reglas y decisiones STP
 
-Tutorial de recorridos: Georreferenciación → Indicadores → Seguimiento → Recorrido Diario. Primero seleccionar la fecha, después el asesor. Descargar un archivo por día y vendedor. Las capturas ilustran ese orden y la descarga mediante Herramientas de mapa → Excel. Los tutoriales se abren una vez por navegador y pueden reabrirse con el botón de ayuda.
+Calcula importes, frecuencia, ticket, última compra y variación entre meses; aplica reglas visibles. No aprende, predice causas ni demuestra impacto. La caída del 30% es un corte de trabajo: exige dos meses completos, cobertura confirmada y al menos dos compras previas. La simulación incluye una caída del 50% para probarla.
 
-Las nuevas páginas guardan los datos solo mientras permaneces en ellas: al navegar o recargar, hay que cargarlos de nuevo. Los puntos GPS no equivalen a visitas o ventas. Para relacionar recorrido y ventas se necesitan fechas coincidentes y documentos/clientes asociados; el resumen mensual no permite ese cruce. `/mapa` mantiene su demostración de ventas ficticias.
+Consolidados exige frecuencia, meses activos y compra mensual alta frente a la mediana del mismo tipo de negocio (al menos tres compradores) o un corte manual. Por recuperar exige cobertura confirmada y superar ciclos definidos. Por captar requiere prospecto declarado: la ausencia de registros no demuestra inactividad.
 
+La agenda propone revisar recuperación, caídas, desarrollo, reposición y segunda compra. No estima ventas adicionales, habilidad del asesor ni rutas óptimas. T requiere potencial y viabilidad Alta o Media informados. P define propuestas y metas que deben validarse con clientes. Medir mejora requiere gestiones, compras posteriores y comparación adecuada.
 
+La evaluación operativa usa meses calendario completos y cobertura confirmada en Subir datos. Los datos reales con cobertura pendiente solo habilitan revisión mediante gráficas; señales, selección y plan se habilitan después de confirmar los meses. El ejemplo parcial permanece como demostración, claramente identificado, sin equivaler a ventas de un mes completo. La frecuencia vuelve a expresarse en documentos y meses activos; no se extrapolan los importes parciales. La consolidación permite un mes activo como mínimo, mantiene el corte ajustable de seis documentos y se presenta como perfil preliminar. Para proponer revisar reposición se conservan compras en al menos dos fechas distintas; varios documentos del mismo día requieren confirmación y no prueban recompra.
+
+La ficha opcional usa Cliente, TipoNegocio, Zona, PotencialMensual, CicloDias, Viabilidad, Prospecto, CategoriasCompradas y CategoriasObjetivo. Conserva NOMBRE [código] al cargar fichas del detalle. Categorías observadas salen del detalle; potencial, objetivo de surtido y viabilidad se validan con el equipo.
+
+## Operación y verificación
+
+Datos en memoria: navegar los conserva; recargar los borra. No hay endpoint de subida ni IA externa. El mapa usa cartografía OpenStreetMap; los registros se procesan en el navegador. No añadas archivos empresariales ni credenciales a Git.
+
+npm test verifica importación, identidades, duplicados, fechas, cobertura, filtros, conciliación, STP, selección y CSV. npm run build compila para producción. Compatible con Vercel mediante preset Next.js; esta entrega sigue local.

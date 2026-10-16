@@ -1,0 +1,1 @@
+export type DetailLine={key:string;client:string;clientId:string;document:string;date:string;productId:string;product:string;category:string;advisor:string;channel:string;zone:string;created:string;lat:number|null;lng:number|null;units:number;subtotal:number;cost:number;tax:number;discount:number};

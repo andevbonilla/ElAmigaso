@@ -1,4 +1,5 @@
-export type Sale = { id: string; date: string; time: string; client: string; order: string; payment: string; status: string; advisor: string; total: number };
+export type Sale = { id: string; date: string; time: string; client: string; clientId?:string; order: string; payment: string; status: string; advisor: string; total: number };
+export const observedSale=(s:Sale)=>(s.status==='APROBADO'||s.status==='REPORTADO')&&s.total>0;
 export type ImportResult = { rows: Sale[]; issues: string[]; duplicates: number; rejected: number; sourceCount: number };
 export const money = (value: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
 export const compact = (value: number) => new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: 1 }).format(value);

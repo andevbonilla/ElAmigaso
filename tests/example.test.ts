@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {exampleInfo,exampleDate,localExampleAllowed} from '../lib/example-info';
+test('the real example identifies workbook, original location, reporting period and separate download date',()=>{assert.equal(exampleInfo.fileName,'Facturación-2026-10-16T05_26_17.926Z.xlsx');assert.ok(exampleInfo.localPath.endsWith(exampleInfo.fileName));assert.equal(exampleInfo.start,'2026-09-01');assert.equal(exampleInfo.end,'2026-09-07');assert.match(exampleDate(exampleInfo.downloadedAt),/16.*octubre.*2026/);assert.match(exampleDate(exampleInfo.start),/1.*septiembre.*2026/);assert.match(exampleInfo.abakoPath,/Reportes → Ventas → Facturación/);});
+test('the local business example is not served from public deployments or other hosts',()=>{assert.equal(localExampleAllowed('localhost',undefined),true);assert.equal(localExampleAllowed('127.0.0.1',undefined),true);assert.equal(localExampleAllowed('app.vercel.app',undefined),false);assert.equal(localExampleAllowed('127.0.0.1','1'),false);});

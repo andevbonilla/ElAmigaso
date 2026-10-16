@@ -24,6 +24,6 @@ export async function readSalesFile(file: File) {
     });
     if (grid.some(row => headers.every(h => row.map(norm).includes(h)))) return { ...parseRows(grid), sheet: sheet.name };
   }
-  throw new Error('Ninguna hoja tiene las columnas de la bandeja de facturación de ABAKO. Si exportaste el resumen por Asesor, cárgalo en Rentabilidad por asesor.');
+  throw new Error('Este archivo no contiene facturas por cliente. El resumen por asesor y el recorrido GPS no permiten segmentar clientes. Exporta la bandeja de facturación con Factura, Cliente, Pedido, Forma de Pago, Estado, Asesor y Total.');
 }
 

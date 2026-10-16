@@ -1,21 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import {usePathname} from 'next/navigation';
 import Image from 'next/image';
-import { BarChart3, Map, ShieldCheck } from 'lucide-react';
-export default function Shell({ children }: { children: React.ReactNode }) {
-  const path = usePathname();
-  return <div className="app-shell reference-shell">
-    <header className="company-header"><div className="company-header-inner">
-      <Link href="/" className="company-brand" aria-label="El Amiga$o · Inicio"><Image src="/brand/el-amigaso-logo.png" width={525} height={183} alt="El Amiga$o · Plan de recaudo diario" priority /></Link>
-      <div className="company-location"><strong>Distribución de ventas</strong><span>Bogotá, D.C.</span></div>
-    </div></header>
-    <div className="section-navigation"><nav aria-label="Navegación principal">
-      <Link href="/" aria-current={path === '/' ? 'page' : undefined} className={path === '/' ? 'active' : ''}><BarChart3 size={18}/>Análisis de ventas</Link>
-      <Link href="/mapa" aria-current={path === '/mapa' ? 'page' : undefined} className={path === '/mapa' ? 'active' : ''}><Map size={18}/>Ventas por zona</Link>
-      <Link href="/rentabilidad" aria-current={path === '/rentabilidad' ? 'page' : undefined} className={path === '/rentabilidad' ? 'active' : ''}><BarChart3 size={18}/>Rentabilidad por asesor</Link>
-      <Link href="/recorridos" aria-current={path === '/recorridos' ? 'page' : undefined} className={path === '/recorridos' ? 'active' : ''}><Map size={18}/>Recorridos reales</Link>
-    </nav><span className="local-processing"><ShieldCheck size={15}/>Datos procesados en tu navegador</span></div>
-    <div className="main-shell"><main>{children}</main><footer className="company-footer"><Image src="/brand/el-amigaso-logo.png" width={160} height={56} alt="El Amiga$o · Plan de recaudo diario"/><span>Inteligencia comercial · Bogotá, D.C.</span></footer></div>
-  </div>;
-}
+export default function Shell({children}:{children:React.ReactNode}){const path=usePathname();return <div className="app-shell"><header className="company-header"><div className="company-header-inner"><Link href="/" aria-label="El Amigaso · Segmentación STP"><Image src="/brand/el-amigaso-logo.png" width={525} height={183} alt="El Amigaso · Plan de recaudo diario" priority/></Link><div><strong>Decisiones comerciales con STP</strong><span>Segmentar · Priorizar · Proponer</span></div></div></header><div className="section-navigation"><nav aria-label="Modelo STP">{[{href:'/',letter:'S',label:'Qué se encontró'},{href:'/objetivos',letter:'T',label:'A quién priorizar'},{href:'/posicionamiento',letter:'P',label:'Qué ofrecer'},{href:'/datos',letter:'↗',label:'Subir datos'},{href:'/guia',letter:'?',label:'Guía de ABAKO'}].map(item=><Link key={item.href} href={item.href} aria-current={path===item.href?'page':undefined} className={path===item.href?'active':''}><b>{item.letter}</b>{item.label}</Link>)}</nav><span>Procesamiento local en tu navegador</span></div><main>{children}</main><footer className="company-footer"><Image src="/brand/el-amigaso-logo.png" width={160} height={56} alt="El Amigaso"/><span>STP · Perfiles y decisiones sujetos a validación comercial</span></footer></div>;}
+
