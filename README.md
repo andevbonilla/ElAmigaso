@@ -1,14 +1,17 @@
 # El Amigaso · Decisiones comerciales STP
 
-Aplicación local Next.js con cinco páginas. Ejecuta npm ci y npm run dev; abre http://127.0.0.1:3000.
+Aplicación Next.js con seis páginas. Ejecuta npm ci y npm run dev; abre http://127.0.0.1:3000.
 
+- **Subir datos (entrada):** la dirección inicial `/` abre `/datos`. Carga un mes completo y confirma la cobertura; las fichas comerciales se completan después para evaluar candidatos.
 - **S · Qué se encontró:** señales y próximos pasos. **Mapa y gráficas** muestra concentración geográfica y compras por fecha, categoría, asesor y zona.
 - **T · A quién priorizar:** selección humana por compra actual, potencial informado y viabilidad, limitada por capacidad.
 - **P · Qué ofrecer:** beneficio, atención y medición por segmento; exporta el plan CSV.
-- **Subir datos:** carga archivos y abre el tutorial con capturas de la consulta comprobada en ABAKO. Criterios y fichas comerciales quedan desplegables.
+- **Datos cargados:** página `/previsualizacion`, con la tabla de ventas y fichas, búsqueda, paginación y descargas.
 - **Guía de ABAKO:** última página, con los pasos completos para obtener datos actualizados o de otro periodo. El aviso del ejemplo enlaza directamente a esta guía.
 
-Cada página muestra una explicación corta y un ejemplo ilustrativo desplegable. En T, los grupos de prioridad y los perfiles de S se distinguen explícitamente. La tabla muestra seis filas por página, con el rango y el total del grupo, botones Anterior/Siguiente y un contador independiente de plazas elegidas. Pulsar un grupo abre su lista; la capacidad limita la selección, no el número de clientes del grupo. En la simulación de regresión, Desarrollar (presentado como Aumentar compras) reúne 24 clientes: 6 En desarrollo, 12 Por recuperar y 6 Por captar; 21 son elegibles. Las cuatro páginas de la tabla conservan los 24, sin omitir registros.
+La navegación sigue ese orden. S está en `/segmentacion`; las fichas y sus enlaces siguen en `/datos`. Cada sección tiene un botón **Previsualizar datos cargados** que abre la página de datos sin repetir la tabla al fondo. Las metas y el potencial se validan comercialmente.
+
+Las páginas conservan instrucciones junto a los controles, sin los bloques de introducción y ejemplos repetidos. En T, los grupos de prioridad y los perfiles de S se distinguen explícitamente. La tabla muestra seis filas por página, con el rango y el total del grupo, botones Anterior/Siguiente y un contador independiente de plazas elegidas. Pulsar un grupo abre su lista; la capacidad limita la selección, no el número de clientes del grupo. La agenda resumida por asesor, el texto sobre rutas y ganancias y el ejemplo antiguo de los 24 clientes se retiraron de la interfaz.
 
 En T, Potencial por estimar identifica los clientes sin esa estimación. El aviso distingue cuántos necesitan potencial mensual y cuántos viabilidad de atención; esos conteos pueden corresponder a las mismas tiendas. El Excel aporta compras realizadas, no estos dos juicios comerciales. Cada fila muestra todos los campos que faltan y enlaza a su ficha, que se abre con el cliente seleccionado. Un mes de ventas no sustituye la validación del asesor. La marca en textos es El Amigaso; el logo original se conserva.
 
@@ -18,7 +21,7 @@ El ejemplo se distribuye como **public/examples/facturacion-septiembre-2026-ejem
 
 `.vercelignore` contiene una excepción para este CSV concreto, después de la regla general `*.csv`. Conserva esa excepción: sin ella, Vercel omite el archivo y el ejemplo no puede cargarse. Los demás CSV y los Excel siguen excluidos del despliegue.
 
-Las cinco páginas incluyen **Previsualización de los datos**, con búsqueda, paginación, descarga del ejemplo y exportación de los registros visibles. La tabla usa la fuente activa y el periodo seleccionado; no hereda los filtros individuales de las gráficas. El detalle muestra productos por factura (varias filas pueden ser una misma compra), y la pestaña Fichas comerciales distingue campos vacíos de valores cero. Al cargar otro archivo, la vista se actualiza con sus datos.
+**Datos cargados**, antes de Guía de ABAKO, incluye la previsualización con búsqueda, paginación, descarga del ejemplo y exportación de los registros visibles. La tabla usa la fuente activa y el periodo seleccionado; no hereda los filtros individuales de las gráficas. El detalle muestra productos por factura (varias filas pueden ser una misma compra), y la pestaña Fichas comerciales distingue campos vacíos de valores cero. Al cargar otro archivo, la vista se actualiza con sus datos.
 
 ## Obtener el Excel detallado en ABAKO
 

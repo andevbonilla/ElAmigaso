@@ -1,2 +1,2 @@
-import StpSegments from '@/components/stp-segments';
-export default function Page() { return <StpSegments/>; }
+import {redirect} from 'next/navigation';
+export default function Page(){redirect('/datos');}
